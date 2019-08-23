@@ -119,6 +119,8 @@ typedef enum W_PROCESSINFOCLASS
 //Typedefs for accessing NTDLL.dll functions
 typedef NTSTATUS(__stdcall* oNtQuerySystemInformation)(SYSTEM_INFORMATION_CLASS, void*, unsigned long, unsigned long*);
 typedef NTSTATUS(__stdcall* oNtQueryInformationProcess)(HANDLE procHandle, WPROCESSINFOCLASS typeOfInfo, void* procInfo, unsigned long procInfoSize, unsigned long* procInfoWritten);
+typedef NTSTATUS(__stdcall* oNtQueryObject)(HANDLE Handle, OBJECT_INFORMATION_CLASS oic, void* ObjectInformation, unsigned long ObjInfoLength, unsigned long* ReturnedLength);
+typedef BOOL(__stdcall* oCompareObjectHandles)(HANDLE par1, HANDLE par2);
 
 typedef struct {
 	
@@ -129,8 +131,8 @@ typedef struct _PROCESS_HANDLE_TABLE_ENTRY_INFO
 	HANDLE HandleValue;
 	ULONG_PTR HandleCount;
 	ULONG_PTR PointerCount;
-	ULONG GrantedAccess;
-	ULONG ObjectTypeIndex;
+	ULONG GrantedAccess; //Handle access (ex: VM Read)
+	ULONG ObjectTypeIndex; //7 pour processus, 3 pour dossier, 0x24 pour fichier, 0 quand c'est rien
 	ULONG HandleAttributes;
 	ULONG Reserved;
 } PROCESS_HANDLE_TABLE_ENTRY_INFO, * PPROCESS_HANDLE_TABLE_ENTRY_INFO;
@@ -164,4 +166,6 @@ typedef struct _PROCESS_HANDLE_SNAPSHOT_INFORMATION
 
 
 std::vector<PROCESS_HANDLE_TABLE_ENTRY_INFO>* getHandleInfoForProcess(unsigned int pid); //Gets a list of handles opened by a specified process
+HANDLE GetHandleInfoHandleForProcess(unsigned int pid);
 std::vector<PROCESS_HANDLE_TABLE_ENTRY_INFO>* getHandleInfoForProcess(HANDLE remProcess); //Gets a list of handles opened by a specified process
+BOOL wrapCompareObjectHandles(HANDLE p1, HANDLE p2);

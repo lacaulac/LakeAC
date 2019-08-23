@@ -5,10 +5,15 @@ const long STATUS_INFO_LENGTH_MISMATCH = 0xC0000004;
 
 std::vector<PROCESS_HANDLE_TABLE_ENTRY_INFO>* getHandleInfoForProcess(unsigned int pid)
 {
-	HANDLE hToProc = OpenProcess(PROCESS_QUERY_INFORMATION, false, pid);
+	HANDLE hToProc = GetHandleInfoHandleForProcess(pid);
 	std::vector<PROCESS_HANDLE_TABLE_ENTRY_INFO>* t = getHandleInfoForProcess(hToProc);
 	CloseHandle(hToProc);
 	return t;
+}
+
+HANDLE GetHandleInfoHandleForProcess(unsigned int pid)
+{
+	return OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_DUP_HANDLE, false, pid);
 }
 
 std::vector<PROCESS_HANDLE_TABLE_ENTRY_INFO>* getHandleInfoForProcess(HANDLE remProcess)
@@ -48,4 +53,10 @@ std::vector<PROCESS_HANDLE_TABLE_ENTRY_INFO>* getHandleInfoForProcess(HANDLE rem
 	free(buffer);
 	
 	return res;
+}
+
+BOOL wrapCompareObjectHandles(HANDLE p1, HANDLE p2)
+{
+	oCompareObjectHandles fun = (oCompareObjectHandles)GetProcAddress(GetModuleHandleA("kernelbase.dll"), "CompareObjectHandles");
+	return fun(p1, p2);
 }

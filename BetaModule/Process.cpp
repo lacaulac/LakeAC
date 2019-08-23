@@ -74,9 +74,9 @@ std::vector<THREADENTRY32>* Process::GetThreads()
 	return listedThreads;
 }
 
-std::vector<unsigned int>* Process::GetAllPids()
+std::vector<unsigned long>* Process::GetAllPids()
 {
-	std::vector<unsigned int>* listedPids = new std::vector<unsigned int>();
+	std::vector<unsigned long>* listedPids = new std::vector<unsigned long>();
 	HANDLE hProcessSnap = INVALID_HANDLE_VALUE;
 	PROCESSENTRY32 pe32;
 

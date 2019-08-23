@@ -89,3 +89,8 @@ BYTE* Process::dumpModule(MODULEENTRY32 mod)
 	}
 	return buffer;
 }
+
+HANDLE Process::getHandle()
+{
+	return procHandle;
+}

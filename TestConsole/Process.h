@@ -13,6 +13,7 @@ public:
 	std::vector<THREADENTRY32>* GetThreads();
 	static unsigned int getCurrentPid();
 	BYTE* dumpModule(MODULEENTRY32 mod);
+	HANDLE getHandle();
 private:
 	int pid;
 	HANDLE procHandle;
