@@ -39,6 +39,7 @@ DWORD __stdcall HookCheckThread(LPVOID parameter);
 
 void HookBladeThread(LPVOID parameter)
 {
+	MessageBoxA(0, "Now blocking injection", "Lake AC HookBlade", 0);
 #if NDEBUG
 	if (IsDebuggerPresent())
 	{

@@ -116,6 +116,13 @@ int main()
 	else
 		printf("Debugged.\n");
 		*/
+
+	HWND wnd = FindWindowA(NULL, "Minecraft 1.9.4");
+	unsigned long pid;
+	GetWindowThreadProcessId(wnd, &pid);
+	char bufferr[255];
+	GetClassNameA(wnd, bufferr, 254);
+
 	std::cout << "Size of HMODULE on x64: " << sizeof(HMODULE) << std::endl;
 	std::cout << "Size of FARPROC on x64: " << sizeof(FARPROC) << std::endl;
 	std::cout << "Size of LPVOID on x64: " << sizeof(LPVOID) << std::endl;

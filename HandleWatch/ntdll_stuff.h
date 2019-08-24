@@ -165,7 +165,7 @@ typedef struct _PROCESS_HANDLE_SNAPSHOT_INFORMATION
 
 
 
-std::vector<PROCESS_HANDLE_TABLE_ENTRY_INFO>* getHandleInfoForProcess(unsigned int pid); //Gets a list of handles opened by a specified process
+std::vector<PROCESS_HANDLE_TABLE_ENTRY_INFO> getHandleInfoForProcess(unsigned int pid); //Gets a list of handles opened by a specified process
 HANDLE GetHandleInfoHandleForProcess(unsigned int pid);
-std::vector<PROCESS_HANDLE_TABLE_ENTRY_INFO>* getHandleInfoForProcess(HANDLE remProcess); //Gets a list of handles opened by a specified process
+std::vector<PROCESS_HANDLE_TABLE_ENTRY_INFO> getHandleInfoForProcess(HANDLE remProcess); //Gets a list of handles opened by a specified process
 BOOL wrapCompareObjectHandles(HANDLE p1, HANDLE p2);

@@ -3,21 +3,28 @@
 
 #include <iostream>
 #include <Windows.h>
+#include "../gamedefs.h"
+
 
 bool inject(char* path, unsigned long pid);
 
 int main()
 {
-	char* buff = (char*)calloc(255, 1);
+	HWND windowHandle = FindWindowA(GAME_WINDOW_CLASS, GAME_WINDOW_NAME);
 	unsigned long targetPid;
+	GetWindowThreadProcessId(windowHandle, &targetPid);
 
-    std::cout << "Hello World!\n";
-	std::cout << "PID: ";
-	std::cin >> targetPid;
-	std::cout << "DLL name:";
-	std::cin >> buff;
+	bool hasSuccess = true;
+	hasSuccess &= inject((char*)"D:\\Documents\\LakeAC\\x64\\Release\\InjectWatch", targetPid);
+	Sleep(1000);
+	hasSuccess &= inject((char*)"D:\\Documents\\LakeAC\\x64\\Release\\MemoryWatch", targetPid);
+	Sleep(1000);
+	hasSuccess &= inject((char*)"D:\\Documents\\LakeAC\\x64\\Release\\HookBlade", targetPid);
+	Sleep(1000);
+	hasSuccess &= inject((char*)"D:\\Documents\\LakeAC\\x64\\Release\\HandleWatch.dll", GetCurrentProcessId());
+	Sleep(1000);
 
-	if (inject(buff, targetPid))
+	if (hasSuccess)
 	{
 		std::cout << "Successful injection into " << targetPid << std::endl;
 	}
@@ -28,8 +35,11 @@ int main()
 		auto t = 3;
 	}
 
-	free(buff);
-
+	while (!GetAsyncKeyState(VK_F9))
+	{
+		Sleep(100);
+	}
+	system("PAUSE");
 	return 0;
 }
 
