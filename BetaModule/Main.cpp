@@ -175,7 +175,6 @@ DWORD WINAPI MainThread(LPVOID parameter)
 HMODULE hkFnLoadLibraryW(LPCWSTR name)
 {
 	bool isAllowed = (wcsstr(name, L"DummyDLL.dll") != NULL);
-	//TODO: Do an md5 checksum on allowed files instead
 
 	HMODULE tmp;
 	if (isAllowed)
@@ -192,7 +191,6 @@ HMODULE hkFnLoadLibraryW(LPCWSTR name)
 HMODULE __stdcall hkFnLoadLibraryA(LPCSTR name)
 {
 	bool isAllowed = (strcmp(name, "DummyDLL.dll") != NULL) | ModUtils::isInsideModule(_ReturnAddress(), anticheatModule);
-	//TODO: Do an md5 checksum on allowed files instead
 
 	HMODULE tmp;
 	if (isAllowed)

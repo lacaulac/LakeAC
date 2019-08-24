@@ -88,7 +88,7 @@ void HookBladeThread(LPVOID parameter)
 
 DWORD __stdcall HookCheckThread(LPVOID parameter)
 {
-
+	//TODO Memory leak here, gotta fix this shite
 	//MessageBoxA(0, "Started checking for modified hooks :)", "LakeAC Alpha Info", MB_ICONASTERISK); //Debug message
 	std::vector<Hook*>* hooks = (std::vector<Hook*>*)parameter; //Getting the vector<Hook*> containing all the (non-)active hooks
 	while (true)
