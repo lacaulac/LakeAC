@@ -14,14 +14,16 @@ int main()
 	unsigned long targetPid;
 	GetWindowThreadProcessId(windowHandle, &targetPid);
 
+	printf("The target pid is %d and our pid is %d", targetPid, GetCurrentProcessId());
+
 	bool hasSuccess = true;
-	hasSuccess &= inject((char*)"D:\\Documents\\LakeAC\\x64\\Release\\InjectWatch", targetPid);
+	//hasSuccess &= inject((char*)"D:\\Documents\\LakeAC\\x64\\Debug\\InjectWatch", targetPid);
 	Sleep(1000);
-	hasSuccess &= inject((char*)"D:\\Documents\\LakeAC\\x64\\Release\\MemoryWatch", targetPid);
+	//hasSuccess &= inject((char*)"D:\\Documents\\LakeAC\\x64\\Debug\\MemoryWatch", targetPid);
 	Sleep(1000);
-	hasSuccess &= inject((char*)"D:\\Documents\\LakeAC\\x64\\Release\\HookBlade", targetPid);
+	hasSuccess &= inject((char*)"D:\\Documents\\LakeAC\\x64\\Debug\\HookBlade", targetPid);
 	Sleep(1000);
-	hasSuccess &= inject((char*)"D:\\Documents\\LakeAC\\x64\\Release\\HandleWatch.dll", GetCurrentProcessId());
+	hasSuccess &= inject((char*)"D:\\Documents\\LakeAC\\x64\\Debug\\HandleWatch.dll", GetCurrentProcessId());
 	Sleep(1000);
 
 	if (hasSuccess)
@@ -67,8 +69,6 @@ bool inject(char* path, unsigned long pid)
 		return false;
 
 	printf("[INJECTION] Started LoadLibraryA into %d\n", pid);
-	WaitForSingleObject(tHandle, INFINITE);
-	printf("[INJECTION] Finished the injection into %d\n", pid);
 
 
 	return true;

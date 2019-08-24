@@ -40,6 +40,7 @@ void MainThread(LPVOID parameter)
 						//Analyse handle rights. If it can write/read/createthread, then hook/dump/beat the shit out of it
 						if (((t.GrantedAccess && PROCESS_VM_READ) || (t.GrantedAccess && PROCESS_VM_WRITE) || (t.GrantedAccess && PROCESS_CREATE_THREAD) || (t.GrantedAccess && PROCESS_SUSPEND_RESUME) || (t.GrantedAccess && PROCESS_VM_OPERATION)))
 						{
+							//TODO The suspect process might be a 32-bits process. We need a 32-bits version of FrenchGuy.dll
 							foundPids.insert(pid);
 							if (!inject((char*)"D:\\Documents\\LakeAC\\x64\\Release\\FrenchGuy.dll", pid))
 							{
@@ -47,6 +48,8 @@ void MainThread(LPVOID parameter)
 								CreateRemoteThread(procHandle, 0, 0, (LPTHREAD_START_ROUTINE)GetProcAddress(GetModuleHandleA("kernel32.dll"), "ExitProcess"), (LPVOID)420, 0, 0);
 							}
 							break;
+							//MAYBE?
+							//CreateRemoteThread(procHandle, 0, 0, (LPTHREAD_START_ROUTINE)GetProcAddress(GetModuleHandleA("kernel32.dll"), "CloseHandle"), (LPVOID)t.handleValue, 0, 0);
 						}
 					}
 					CloseHandle(copiedHandle);

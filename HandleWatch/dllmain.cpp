@@ -12,6 +12,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     case DLL_PROCESS_ATTACH:
 		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)& MainThread, 0, 0, 0);
 		Beep(349, 100);
+		MessageBoxA(0, "HandleWatch is here!", "LakeAC", 0);
+
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
     case DLL_PROCESS_DETACH:

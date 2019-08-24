@@ -10,6 +10,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     {
     case DLL_PROCESS_ATTACH:
 		Beep(262, 100);
+		MessageBoxA(0, "InjectWatch is here!", "LakeAC", 0);
+
 		//TODO Think of how to do this
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:

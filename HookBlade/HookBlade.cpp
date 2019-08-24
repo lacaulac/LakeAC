@@ -39,12 +39,13 @@ DWORD __stdcall HookCheckThread(LPVOID parameter);
 
 void HookBladeThread(LPVOID parameter)
 {
-	MessageBoxA(0, "Now blocking injection", "Lake AC HookBlade", 0);
 #if NDEBUG
 	if (IsDebuggerPresent())
 	{
 		ExitProcess(420);
 	}
+#else
+	//MessageBoxA(0, "Now blocking injection", "Lake AC HookBlade", 0);
 #endif // DEBUG
 	hbModule = GetModuleHandleA("HookBlade.dll");
 
@@ -88,7 +89,6 @@ void HookBladeThread(LPVOID parameter)
 
 DWORD __stdcall HookCheckThread(LPVOID parameter)
 {
-	//TODO Memory leak here, gotta fix this shite
 	//MessageBoxA(0, "Started checking for modified hooks :)", "LakeAC Alpha Info", MB_ICONASTERISK); //Debug message
 	std::vector<Hook*>* hooks = (std::vector<Hook*>*)parameter; //Getting the vector<Hook*> containing all the (non-)active hooks
 	while (true)
@@ -104,7 +104,8 @@ DWORD __stdcall HookCheckThread(LPVOID parameter)
 			if (!hk->isCurrentCodeOk()) //If the code placed at the address of the original function doesn't correspond to the state of the hook (active/inactive)
 			{
 				//Then we've detected something trying to undermine our hooking efforts, most likely a cheat.
-				MessageBoxA(0, "An unwanted hook was detected. Exitting...", "LakeAC Alpha DETECTION", MB_ICONSTOP); //Debug message
+				//DONETODO Remove the debug message
+				//MessageBoxA(0, "An unwanted hook was detected. Exitting...", "LakeAC Alpha DETECTION", MB_ICONSTOP); //Debug message
 				ExitProcess(420);
 			}
 		}
@@ -132,6 +133,9 @@ HMODULE hkFnLoadLibraryW(LPCWSTR name)
 
 HMODULE __stdcall hkFnLoadLibraryA(LPCSTR name)
 {
+	//TODO Fix the infinite calling bug
+	//HACK Deny everything
+	return NULL;
 	bool isAllowed = (strcmp(name, "DummyDLL.dll") != NULL) | ModUtils::isInsideModule(_ReturnAddress(), hbModule);
 	//TODO: Do an md5 checksum on allowed files instead
 

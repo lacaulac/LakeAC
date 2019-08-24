@@ -11,6 +11,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     {
     case DLL_PROCESS_ATTACH:
 		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)HookBladeThread, 0, 0, 0);
+		MessageBoxA(0, "HookBlade is here!", "LakeAC", 0);
+
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
     case DLL_PROCESS_DETACH:
