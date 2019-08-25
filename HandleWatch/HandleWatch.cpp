@@ -3,7 +3,7 @@
 #include <vector>
 #include <set>
 #include "Process.h"
-#include "ntdll_stuff.h"
+#include "../shared/ntdll_stuff.h"
 #include "../gamedefs.h"
 
 bool inject(char* path, unsigned long pid);

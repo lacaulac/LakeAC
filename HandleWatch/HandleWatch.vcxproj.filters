@@ -24,13 +24,13 @@
     <ClInclude Include="HandleWatch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ntdll_stuff.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Process.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\gamedefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\ntdll_stuff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,10 +44,10 @@
     <ClCompile Include="HandleWatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ntdll_stuff.cpp">
+    <ClCompile Include="Process.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Process.cpp">
+    <ClCompile Include="..\shared\ntdll_stuff.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

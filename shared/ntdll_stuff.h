@@ -1,11 +1,10 @@
 #pragma once
 
-#include <winternl.h>
 #include <Windows.h>
 #include <processthreadsapi.h>
 #include <vector>
 #include <intrin.h>
-#include "pch.h"
+#include <winternl.h>
 
 /* USEFUL STUFF
 	NTSTATUS error codes: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/596a1078-e883-4972-9bbc-49e60bebca55

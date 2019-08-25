@@ -1,5 +1,4 @@
-#include "pch.h"
-#include "ntdll_stuff.h"
+#include "../shared/ntdll_stuff.h"
 
 const long STATUS_INFO_LENGTH_MISMATCH = 0xC0000004;
 

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "FrenchGuy.h"
 #include "Hook.h"
-#include "ntdll_stuff.h"
+#include "../shared/ntdll_stuff.h"
 #include "../gamedefs.h"
 
 typedef NTSTATUS(__stdcall* oNtReadVirtualMemory)(HANDLE procHandle, void* targetAddress, void* buffer, unsigned long numberOfBytesToRead, unsigned long* readBytes);

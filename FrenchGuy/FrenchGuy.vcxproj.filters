@@ -27,13 +27,13 @@
     <ClInclude Include="Hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ntdll_stuff.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\gamedefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\PEManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\ntdll_stuff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -50,10 +50,10 @@
     <ClCompile Include="Hook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ntdll_stuff.cpp">
+    <ClCompile Include="..\shared\PEManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\shared\PEManager.cpp">
+    <ClCompile Include="..\shared\ntdll_stuff.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
