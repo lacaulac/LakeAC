@@ -7,6 +7,10 @@
 #include <vector>
 #include "Process.h"
 #include <winternl.h>
+#include "../shared/PEManager.h"
+#include <algorithm>
+#include <iterator>
+#include <boost/uuid/detail/md5.hpp>
 
 int pid = 0;
 
@@ -104,6 +108,7 @@ typedef struct _OBJECT_ALL_INFORMATION {
 
 } OBJECT_ALL_INFORMATION, * POBJECT_ALL_INFORMATION;
 
+using namespace boost::uuids::detail;
 
 int main()
 {
@@ -116,12 +121,47 @@ int main()
 	else
 		printf("Debugged.\n");
 		*/
-
+	/*
 	HWND wnd = FindWindowA(NULL, "Minecraft 1.9.4");
 	unsigned long pid;
 	GetWindowThreadProcessId(wnd, &pid);
 	char bufferr[255];
 	GetClassNameA(wnd, bufferr, 254);
+	*/
+	/*
+	ULONGLONG baseAddress = (ULONGLONG)GetModuleHandleA("TestConsole.exe");
+	IMAGE_DOS_HEADER* dosHeader = (IMAGE_DOS_HEADER*)baseAddress;
+	ULONGLONG peHeaderAddress = baseAddress + (ULONGLONG)dosHeader->e_lfanew;
+	IMAGE_NT_HEADERS64* peHeader = (IMAGE_NT_HEADERS64*)(peHeaderAddress);
+	ULONGLONG segmentTableAddress = peHeaderAddress + peHeader->FileHeader.SizeOfOptionalHeader + sizeof(IMAGE_NT_HEADERS64) - (peHeader->FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER));
+	IMAGE_SECTION_HEADER* textSeg = NULL;
+	for (int i = 0; i < peHeader->FileHeader.NumberOfSections; i++)
+	{
+		textSeg = (IMAGE_SECTION_HEADER*)(segmentTableAddress + (i * sizeof(IMAGE_SECTION_HEADER)));
+		if (strcmp((char*)textSeg->Name, ".text") == 0)
+			break;
+	}
+	*/
+
+	IMAGE_SECTION_HEADER* textSeg = PEManager::GetSectionHeader((char*)".text", GetModuleHandleA("TestConsole.exe"));
+
+	int amountOfSubSegments = (textSeg->SizeOfRawData - (textSeg->SizeOfRawData % 256)) / 256;
+
+	void* entryPoint = textSeg->VirtualAddress + GetModuleHandleA("TestConsole.exe");
+
+	
+
+	std::vector<md5_hash> hashRes;
+	for (int i = 0; i < amountOfSubSegments; i++)
+	{
+		md5_hash t = PEManager::HashMD5((void*)((BYTE*)entryPoint + (i * 256)), 256);
+		hashRes.push_back(t);
+	}
+
+	md5_hash t2 = PEManager::HashMD5((void*)"Hello!", 6);
+
+	std::vector<md5_hash> hashResV2 = PEManager::hashSection(GetModuleHandleA("TestConsole.exe"), ".text");
+
 
 	std::cout << "Size of HMODULE on x64: " << sizeof(HMODULE) << std::endl;
 	std::cout << "Size of FARPROC on x64: " << sizeof(FARPROC) << std::endl;
