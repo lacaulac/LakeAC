@@ -11,7 +11,7 @@ public:
 	static bool isInsideModule(void* ptr, HMODULE mod);
 	static bool isInsideModule(void* ptr, MODULEENTRY32 mod);
 
-	static MODULEENTRY32* getOriginModule(void* ptr); //Gets the module which contains a given address 
+	static MODULEENTRY32 getOriginModule(void* ptr); //Gets the module which contains a given address 
 private:
 	//This is a stupid if-wrapper function.
 	static bool isInsideModule(void* ptr, void* begin, void* end);

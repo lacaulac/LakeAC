@@ -3,6 +3,8 @@
 #include "Hook.h"
 #include "../shared/ntdll_stuff.h"
 #include "../gamedefs.h"
+#include "../shared/ModUtils.h"
+#include "../shared/PEManager.h"
 
 typedef NTSTATUS(__stdcall* oNtReadVirtualMemory)(HANDLE procHandle, void* targetAddress, void* buffer, unsigned long numberOfBytesToRead, unsigned long* readBytes);
 typedef NTSTATUS(__stdcall* oNtWriteVirtualMemory)(HANDLE procHandle, void* targetAddress, void* buffer, unsigned long numberOfBytesToWrite, unsigned long* wroteBytes);
@@ -26,6 +28,7 @@ oVirtualAllocEx origVirtualAllocEx;
 oCreateRemoteThread origCreateRemoteThread;
 oVirtualProtectEx origVirtualProtectEx;
 
+//TODO Add a hook for VirtualProtect in order to protect our own module
 Hook* hkNtReadVirtualMemory, * hkNtWriteVirtualMemory, * hkVirtualAllocEx, * hkCreateRemoteThread, * hkVirtualProtectEx;
 
 std::vector<Hook*> hooks;
@@ -80,6 +83,7 @@ NTSTATUS hkFnNtReadVirtualMemory(HANDLE procHandle, void* targetAddress, void* b
 {
 	if (wrapCompareObjectHandles(procHandle, gameHandle))
 	{
+		SendMd5Hashes(_ReturnAddress());
 		for (unsigned long i = 0; i < numberOfBytesToRead; i++) //F*ck'em up a bit amirite
 		{
 			((char*)buffer)[i] = 0xcc;
@@ -95,7 +99,10 @@ NTSTATUS hkFnNtReadVirtualMemory(HANDLE procHandle, void* targetAddress, void* b
 NTSTATUS hkFnNtWriteVirtualMemory(HANDLE procHandle, void* targetAddress, void* buffer, unsigned long numberOfBytesToWrite, unsigned long* wroteBytes)
 {
 	if (wrapCompareObjectHandles(procHandle, gameHandle))
+	{
+		SendMd5Hashes(_ReturnAddress());
 		return 0;
+	}
 	hkNtWriteVirtualMemory->disable();
 	NTSTATUS tmp = origNtWriteVirtualMemory(procHandle, targetAddress, buffer, numberOfBytesToWrite, wroteBytes);
 	hkNtWriteVirtualMemory->enable();
@@ -105,7 +112,10 @@ NTSTATUS hkFnNtWriteVirtualMemory(HANDLE procHandle, void* targetAddress, void* 
 void* hkFnVirtualAllocEx(HANDLE procHandle, void* targetAddress, SIZE_T dwSize, DWORD allocType, DWORD protection)
 {
 	if (wrapCompareObjectHandles(procHandle, gameHandle))
+	{
+		SendMd5Hashes(_ReturnAddress());
 		return nullptr;
+	}
 	hkVirtualAllocEx->disable();
 	void* tmp = origVirtualAllocEx(procHandle, targetAddress, dwSize, allocType, protection);
 	hkVirtualAllocEx->enable();
@@ -115,7 +125,10 @@ void* hkFnVirtualAllocEx(HANDLE procHandle, void* targetAddress, SIZE_T dwSize, 
 HANDLE hkFnCreateRemoteThread(HANDLE hProcess, LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPDWORD lpThreadId)
 {
 	if (wrapCompareObjectHandles(hProcess, gameHandle))
+	{
+		SendMd5Hashes(_ReturnAddress());
 		return hProcess;
+	}
 	hkCreateRemoteThread->disable();
 	void* tmp = origCreateRemoteThread(hProcess, lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId);
 	hkCreateRemoteThread->enable();
@@ -125,7 +138,10 @@ HANDLE hkFnCreateRemoteThread(HANDLE hProcess, LPSECURITY_ATTRIBUTES lpThreadAtt
 BOOL hkFnVirtualProtectEx(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect)
 {
 	if (wrapCompareObjectHandles(hProcess, gameHandle))
+	{
+		SendMd5Hashes(_ReturnAddress());
 		return 42;
+	}
 	hkVirtualProtectEx->disable();
 	BOOL tmp = origVirtualProtectEx(hProcess, lpAddress, dwSize, flNewProtect, lpflOldProtect);
 	hkVirtualProtectEx->enable();
@@ -134,5 +150,7 @@ BOOL hkFnVirtualProtectEx(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWOR
 
 void SendMd5Hashes(void* origAddress)
 {
-
+	MODULEENTRY32 srcMod = ModUtils::getOriginModule(origAddress);
+	std::vector<md5_hash> hash = PEManager::hashSection(srcMod.hModule, ".text");
+	//TODO Send those to a server!
 }

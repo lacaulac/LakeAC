@@ -158,16 +158,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\gamedefs.h" />
+    <ClInclude Include="..\shared\ModUtils.h" />
     <ClInclude Include="..\shared\ntdll_stuff.h" />
     <ClInclude Include="..\shared\PEManager.h" />
+    <ClInclude Include="..\shared\Process.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="FrenchGuy.h" />
     <ClInclude Include="Hook.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\shared\ModUtils.cpp" />
     <ClCompile Include="..\shared\ntdll_stuff.cpp" />
     <ClCompile Include="..\shared\PEManager.cpp" />
+    <ClCompile Include="..\shared\Process.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="FrenchGuy.cpp" />
     <ClCompile Include="Hook.cpp" />

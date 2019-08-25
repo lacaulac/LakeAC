@@ -21,16 +21,21 @@ bool ModUtils::isInsideModule(void* ptr, MODULEENTRY32 mod)
 	return isInsideModule(ptr, mod.modBaseAddr, mod.modBaseAddr + mod.modBaseSize); //Just skips to the if-wrapper
 }
 
-MODULEENTRY32* ModUtils::getOriginModule(void* ptr)
+MODULEENTRY32 ModUtils::getOriginModule(void* ptr)
 {
 	Process tmp(GetCurrentProcessId()); //Creates an object to help getting intel on the modules
 	std::vector<MODULEENTRY32>* vecMod = tmp.GetModules();
 	for (MODULEENTRY32 mod : *vecMod)
 	{
 		if (isInsideModule(ptr, mod))
-			return &mod;
+		{
+			vecMod->clear();
+			free(vecMod);
+			return mod;
+		}
+			
 	}
-	return NULL;
+	return MODULEENTRY32();
 }
 
 
