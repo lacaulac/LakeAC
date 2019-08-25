@@ -27,10 +27,10 @@
     <ClInclude Include="Hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ModUtils.h">
+    <ClInclude Include="..\shared\ModUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Process.h">
+    <ClInclude Include="..\shared\Process.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,10 +47,10 @@
     <ClCompile Include="Hook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ModUtils.cpp">
+    <ClCompile Include="..\shared\ModUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Process.cpp">
+    <ClCompile Include="..\shared\Process.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

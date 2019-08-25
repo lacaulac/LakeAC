@@ -159,13 +159,14 @@
   <ItemGroup>
     <ClInclude Include="..\gamedefs.h" />
     <ClInclude Include="..\shared\ntdll_stuff.h" />
+    <ClInclude Include="..\shared\Process.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="HandleWatch.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Process.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\shared\ntdll_stuff.cpp" />
+    <ClCompile Include="..\shared\Process.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="HandleWatch.cpp" />
     <ClCompile Include="pch.cpp">
@@ -174,7 +175,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Process.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

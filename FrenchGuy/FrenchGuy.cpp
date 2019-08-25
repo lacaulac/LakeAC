@@ -18,6 +18,8 @@ void* hkFnVirtualAllocEx(HANDLE procHandle, void* targetAddress, SIZE_T dwSize, 
 HANDLE hkFnCreateRemoteThread(HANDLE hProcess, LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPDWORD lpThreadId);
 BOOL hkFnVirtualProtectEx(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect);
 
+void SendMd5Hashes(void* origAddress);
+
 oNtReadVirtualMemory origNtReadVirtualMemory;
 oNtWriteVirtualMemory origNtWriteVirtualMemory;
 oVirtualAllocEx origVirtualAllocEx;
@@ -128,4 +130,9 @@ BOOL hkFnVirtualProtectEx(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWOR
 	BOOL tmp = origVirtualProtectEx(hProcess, lpAddress, dwSize, flNewProtect, lpflOldProtect);
 	hkVirtualProtectEx->enable();
 	return tmp;
+}
+
+void SendMd5Hashes(void* origAddress)
+{
+
 }

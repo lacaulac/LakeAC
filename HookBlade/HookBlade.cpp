@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "HookBlade.h"
-#include "ModUtils.h"
+#include "../shared/ModUtils.h"
 #include <intrin.h>
 
 typedef HMODULE(__stdcall* oLoadLibraryW)(LPCWSTR); //The mandatory typedef of the original function, so that we don't have to rely on inline assembly to call the original function
@@ -116,8 +116,7 @@ DWORD __stdcall HookCheckThread(LPVOID parameter)
 
 HMODULE hkFnLoadLibraryW(LPCWSTR name)
 {
-	bool isAllowed = (wcsstr(name, L"DummyDLL.dll") != NULL);
-	//TODO: Do an md5 checksum on allowed files instead
+	bool isAllowed = ModUtils::isInsideModule(_ReturnAddress(), hbModule);
 
 	HMODULE tmp;
 	if (isAllowed)
@@ -133,19 +132,15 @@ HMODULE hkFnLoadLibraryW(LPCWSTR name)
 
 HMODULE __stdcall hkFnLoadLibraryA(LPCSTR name)
 {
-	//TODO Fix the infinite calling bug
-	//HACK Deny everything
-	return NULL;
-	bool isAllowed = (strcmp(name, "DummyDLL.dll") != NULL) | ModUtils::isInsideModule(_ReturnAddress(), hbModule);
-	//TODO: Do an md5 checksum on allowed files instead
+	bool isAllowed = ModUtils::isInsideModule(_ReturnAddress(), hbModule);
 
 	HMODULE tmp;
 	if (isAllowed)
 	{
 		//Disabling and enabling back the hook in order to use the original function. Not the best solution but works
-		hkLoadLibraryW->disable();
+		hkLoadLibraryA->disable();
 		tmp = origLoadLibraryA(name);
-		hkLoadLibraryW->enable();
+		hkLoadLibraryA->enable();
 		return tmp;
 	}
 	return GetModuleHandle(L"kernel32.dll"); //Returning an handle to the kernel32 module, in order to mess with the injector

@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "ModUtils.h"
 
 bool ModUtils::isInsideModule(void* ptr, HMODULE mod)

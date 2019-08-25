@@ -2,7 +2,7 @@
 #include "HandleWatch.h"
 #include <vector>
 #include <set>
-#include "Process.h"
+#include "../shared/Process.h"
 #include "../shared/ntdll_stuff.h"
 #include "../gamedefs.h"
 
