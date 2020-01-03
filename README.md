@@ -1,5 +1,7 @@
 # Lake AC Alpha
 
+Abandoned WIP of a client-side anti-cheat.
+
 ## Overview of the different modules
 
 ### Launcher process
